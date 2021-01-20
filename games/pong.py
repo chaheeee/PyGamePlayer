@@ -15,6 +15,7 @@ from sys import exit
 import random
 import pygame.surfarray as surfarray
 import time   #modify
+from tkinter import *  #modify
 
 pygame.init()
 
@@ -48,14 +49,29 @@ bar1_score, bar2_score = 0,0
 clock = pygame.time.Clock()
 font = pygame.font.SysFont("calibri",40)
 
+
+
+
 #modify +++++++++++++++++++++++++++++++++++++++
+
+
 def paused():
     loop =1
     BLACK = (0,0,0)
     RED = (255,0,0)
+    BLUE = (0,0,255)
+    
     myFont = pygame.font.SysFont("arial",30,True,False)
+    myFont2 = pygame.font.SysFont("arial", 20, True, False)
+
     text_pause = myFont.render("PAUSE", True, RED)
+    text_continue = myFont2.render("Press space to continue", True,BLUE )
+    text_quit = myFont2.render("Press esc to quit", True, BLUE)
+
     screen.blit(text_pause, (280,150))
+    screen.blit(text_continue, (230,260))
+    screen.blit(text_quit, (230, 320))
+
 
 
     while loop:
@@ -65,13 +81,14 @@ def paused():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     loop = 0
+                    pygame.quit()
                 if event.key == pygame.K_SPACE:
                     screen.fill((0,0,0))
                     loop = 0
         pygame.display.update()
         clock.tick(60)                
 
-
+# +++++++++++++++++++++++++++++++++++++++++++
 
 
 done = False
@@ -93,11 +110,11 @@ while done==False:
 
 #modify ****************************************************
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_k:
-                #pause = True
+            if event.key == pygame.K_ESCAPE:
                 paused()
             
 
+ # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
             
     score1 = font.render(str(bar1_score), True,(255,255,255))
     score2 = font.render(str(bar2_score), True,(255,255,255))
