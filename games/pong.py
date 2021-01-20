@@ -16,6 +16,15 @@ import random
 import pygame.surfarray as surfarray
 import time   #modify
 from tkinter import *  #modify
+import sqlite3
+import datetime
+
+now=datetime.datetime.now()
+nowDatetime=now.strftime('%Y-%m-%d %H:%M:%S')
+
+conn=sqlite3.connect('rank.db', isolation_level=None)
+c=conn.cursor()
+c.execute("CREATE TABLE IF NOT EXISTS users(username text PRIMARY KEY, score INTEGER, regdate text)")
 
 pygame.init()
 
