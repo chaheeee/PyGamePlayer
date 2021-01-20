@@ -14,6 +14,7 @@ from pygame.locals import *
 from sys import exit
 import random
 import pygame.surfarray as surfarray
+import time   #modify
 
 pygame.init()
 
@@ -47,6 +48,32 @@ bar1_score, bar2_score = 0,0
 clock = pygame.time.Clock()
 font = pygame.font.SysFont("calibri",40)
 
+#modify +++++++++++++++++++++++++++++++++++++++
+def paused():
+    loop =1
+    BLACK = (0,0,0)
+    RED = (255,0,0)
+    myFont = pygame.font.SysFont("arial",30,True,False)
+    text_pause = myFont.render("PAUSE", True, RED)
+    screen.blit(text_pause, (280,150))
+
+
+    while loop:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                loop = 0
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    loop = 0
+                if event.key == pygame.K_SPACE:
+                    screen.fill((0,0,0))
+                    loop = 0
+        pygame.display.update()
+        clock.tick(60)                
+
+
+
+
 done = False
 while done==False:       
     for event in pygame.event.get(): # User did something
@@ -62,6 +89,15 @@ while done==False:
                 bar1_move = 0.
             elif event.key == K_DOWN:
                 bar1_move = 0.
+
+
+#modify ****************************************************
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_k:
+                #pause = True
+                paused()
+            
+
             
     score1 = font.render(str(bar1_score), True,(255,255,255))
     score2 = font.render(str(bar2_score), True,(255,255,255))
