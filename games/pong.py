@@ -83,32 +83,8 @@ font = pygame.font.SysFont("calibri",40)
 
 def pg_rank():
     rankwindow()
-    #rank=True
-    #while rank:
-    #    for event in pygame.event.get():
-    #        if event.type==pygame.QUIT:
-    #            pygame.quit()
-    #            sys.exit()
-
-    # screen.blit(background, (0,0))
-    #myFont=pygame.font.SysFont("arial", 20, True, False)
-    #myFont2 = pygame.font.SysFont("arial",30,True,False)
-    #title_text=myFont2.render("RANK", True, (255,255,255))
-    #screen.blit(title_text, (280,260))
-
-
-    # for row in c.execute("SELECT * FROM users ORDER BY score desc"):
-    #     rank=myFont.render(row, True, WHITE)
-    #     screen.blit(rank, screen)
-    #screen.fill(BLACK)
     loop=1
-    # while loop:
-    #     for event in pygame.event.get():
 
-    #     pygame.display.update()
-    #     clock.tick(60)
-
-    # screen.blit("BACK")
     while loop:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -132,18 +108,20 @@ def rankwindow():
     
     myFont = pygame.font.SysFont("arial",30,True,False)
     myFont2 = pygame.font.SysFont("arial", 14, True, False)
+    myFont3 = pygame.font.SysFont("arial", 25, True, False)
 
     text_rank = myFont.render("RANKING", True, RED)
     text_back = myFont2.render("Press space to go back", True,RED )
-    text_name = myFont2.render("Name", True, BLUE)
-    text_score = myFont2.render("Score", True, BLUE)
-    text_date = myFont2.render("Date", True, BLUE)
-    
+    text_row=myFont.render("NAME    SCORE   REGDATE", True, (0,0,0))
     screen.blit(text_rank, (240,30))
+    screen.blit(text_row, (140, 90))
+    for row, length in zip(c.execute("SELECT username, score, regdate FROM users ORDER BY score desc LIMIT 5"), range(140,610,30)):
+        row=(','.join(row)).split(',')
+        for s, width in zip(row, [140, 270, 320]):
+            rank=myFont3.render(s, True, BLACK)
+            screen.blit(rank, (width, length))
+
     screen.blit(text_back, (240,380))
-    screen.blit(text_name, (185,70))
-    screen.blit(text_score, (280,70))
-    screen.blit(text_date, (400, 70))
 
     pygame.display.flip()
     wait_key()
