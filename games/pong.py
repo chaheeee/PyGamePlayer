@@ -39,14 +39,22 @@ c.execute("CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT
 
 pygame.init()
 
-pygame.mixer.init()
-pygame.mixer.music.load("bgm/bubble_bobble.mp3") # 게임 bgm
-pygame.mixer.music.set_volume(0.3) # volume 조절 1 ~ 0.1
-pygame.mixer.music.play(-1) 
+# # modify +++++++++++++++++++++++++++++++++++++++ 오은상
 
-game_over = pygame.mixer.Sound("bgm/game_over.wav")  # 종료 bgm
-pingpong = pygame.mixer.Sound("bgm/pingpongbat.wav") # 게임 효과음
+music = os.path.join('bgm','bubble_bobble.wav')
+bgm = pygame.mixer.Sound(music)
+bgm.play(-1) 
+bgm.set_volume(0.3) 
 
+music2 = os.path.join('bgm',"game_over.wav")
+game_over = pygame.mixer.Sound(music2)
+
+music3  = os.path.join('bgm',"pingpongbat.wav")
+pingpong = pygame.mixer.Sound(music3)
+
+music4  = os.path.join('bgm', "click.wav")
+click = pygame.mixer.Sound(music4)
+# # +++++++++++++++++++++++++++++++++++++++++++
 
 screen = pygame.display.set_mode((640,480),0,32)
 
@@ -232,11 +240,14 @@ def intro():
                     continue
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if StartButton.isOver(pos):
+                    click.play()
                     i=False
                 elif RankingButton.isOver(pos):
+                    click.play()
                     i=False
                     pg_rank()
                 elif QuitButton.isOver(pos):
+                    click.play()
                     pygame.quit()
                     quit()
         image = pygame.image.load(pong_title_path)
@@ -335,13 +346,13 @@ while done==False:
         if circle_y >= bar1_y - 7.5 and circle_y <= bar1_y + 42.5:
             circle_x = 20.
             speed_x = -speed_x
-            #pygame.mixer.Sound.play(pingpong)
+            pingpong.play()
 
     if circle_x >= bar2_x - 15.:
         if circle_y >= bar2_y - 7.5 and circle_y <= bar2_y + 42.5:
             circle_x = 605.
             speed_x = -speed_x
-            #pygame.mixer.Sound.play(pingpong)
+            pingpong.play()
 
     if circle_x < 5.:
         bar2_score += 1
@@ -354,18 +365,20 @@ while done==False:
     if circle_y <= 10.:
         speed_y = -speed_y
         circle_y = 10.
-        #pygame.mixer.Sound.play(pingpong)
+        pingpong.play()
 
     elif circle_y >= 457.5:
         speed_y = -speed_y
         circle_y = 457.5
-        #pygame.mixer.Sound.play(pingpong)
-        
+        pingpong.play()
+
+    #modify **************************************************** 오은상
+
     if bar2_score == 10:  # ai가 10점 달성시 종료 bgm
         c.execute("INSERT INTO users('username', 'score', 'regdate') VALUES(?,?,?)", \
             ('playern', bar1_score, nowDatetime))
-        pygame.mixer.music.stop() 
-        pygame.mixer.Sound.play(game_over)
+        bgm.stop() 
+        game_over.play()
         game_over.set_volume(0.3)
         # 게임 오버 메시지
         msg = font.render("Game Over", True, (255, 255, 0)) 
@@ -376,6 +389,8 @@ while done==False:
         pygame.time.delay(4000)
         pygame.quit()
         exit()
+
+    # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
 
