@@ -2,17 +2,21 @@
 Pygame 을 사용하여 만들어진 핑퐁게임입니다. AI를 상대로 게임이 진행되며 AI가 10점을 달성시 종료됩니다.
 종료시 플레이어의 이름,점수,날짜가 랭킹에 기록됩니다.
 
+
 Requirements
 ----------
 - python 2 or 3
 - pygame
 - numpy
 
+
+
 Getting started
 -----------
 Pygame 모듈 설치가 필요합니다.
 
 Python 2 또는 3의 환경에서 사용 가능합니다.
+
 
 
 Original game source
@@ -31,7 +35,10 @@ circ = pygame.draw.circle(circ_sur,(255,255,255),(int(15/2),int(15/2)),int(15/2)
 circle = circ_sur.convert()
 circle.set_colorkey((0,0,0))
 ```
+
 1. 공을 받아칠 하얀색 직사각형 바 2개를 생성하고, 하얀색 공을 만듭니다.
+
+
 
 ```
 bar1_x, bar2_x = 10. , 620.
@@ -83,9 +90,12 @@ while done==False:
     circle_y += speed_y * time_sec
     ai_speed = speed_circ * time_sec
   ```
+  
   2. 공이 바에서 튕기면 반대쪽 방향의 랜덤위치로 이동하는 코드입니다.
   여기서, 플레이어가 우측 상단의 X 키를 눌러 종료하면 게임이 꺼집니다. 
   플레이어는 키보드의 위아래 방향키를 이용하여 바를 움직일 수 있습니다.
+  
+  
   
 ```
 if circle_x >= 305.:
@@ -127,15 +137,19 @@ if circle_x >= 305.:
 
     pygame.display.update()
 ```
+
 3. AI의 움직임을 설정한 코드입니다.
 AI의 바가 공을 튕기지 못하고 벽을 지나치면 플레이어가 점수 1점을 획득합니다.
 이후 공의 위치가 초기화 되어 다시 움직입니다.
 마찬가지로 플레이어가 공을 튕기지 못하면 AI가 점수를 획득하고, 공 위치가 초기화됩니다.
     
     
+    
 # Modified game source
 
+
 ## 음향 추가
+
  ```
  music = os.path.join('bgm','bubble_bobble.wav')
 bgm = pygame.mixer.Sound(music)
@@ -151,53 +165,38 @@ pingpong = pygame.mixer.Sound(music3)
 music4  = os.path.join('bgm', "click.wav")
 click = pygame.mixer.Sound(music4)
 ```
+
 1. bgm 폴더안에서 상황에 맞는 음악을 가져와 적절하게 설정해줍니다.
+
+
+`<pingpong.play()>`
 
 ```
     if circle_x <= bar1_x + 10.:
         if circle_y >= bar1_y - 7.5 and circle_y <= bar1_y + 42.5:
             circle_x = 20.
             speed_x = -speed_x
-            **pingpong.play()**
+            pingpong.play()
+```    
 
-    if circle_x >= bar2_x - 15.:
-        if circle_y >= bar2_y - 7.5 and circle_y <= bar2_y + 42.5:
-            circle_x = 605.
-            speed_x = -speed_x
-            **pingpong.play()**
-
-    if circle_x < 5.:
-        bar2_score += 1
-        circle_x, circle_y = 320., 232.5
-        bar1_y,bar_2_y = 215., 215.
-    elif circle_x > 620.:
-        bar1_score += 1
-        circle_x, circle_y = 307.5, 232.5
-        bar1_y, bar2_y = 215., 215.
-    if circle_y <= 10.:
-        speed_y = -speed_y
-        circle_y = 10.
-        **pingpong.play()**
-
-    elif circle_y >= 457.5:
-        speed_y = -speed_y
-        circle_y = 457.5
-        **pingpong.play()**
-```        
 2. 공이 바에 닿을때, 공을 받아내지 못했을때 등 각 상황에 맞게 소리가 나게 브금을 추가해 줍니다.
 
+
+
+
 ```
- **if bar2_score == 3:  # ai가 10점 달성시 종료 bgm
+ if bar2_score == 3:  # ai가 10점 달성시 종료 bgm
         c.execute("INSERT INTO users('username', 'score', 'regdate') VALUES(?,?,?)", \
             ('playern', bar1_score, nowDatetime))
-        **bgm.stop()**
-        **game_over.play()**
-        **game_over.set_volume(0.3)**
+        bgm.stop()
+        game_over.play()
+        game_over.set_volume(0.3)
         # 게임 오버 메시지
-        **msg = font.render("Game Over", True, (255, 255, 0)) 
-        **screen.blit(msg, (230,260))
-        **pygame.display.update()
+        msg = font.render("Game Over", True, (255, 255, 0)) 
+        screen.blit(msg, (230,260))
+        pygame.display.update()
 ```
+
 3. 게임이 종료됐을때 브금이 나오도록 추가해 줍니다.
   AI가 특정 점수를 획득시 게임이 종료되는 문구가 표시되고, 4초후 프로그램이 종료되도록 설정합니다.
 
@@ -209,7 +208,9 @@ click = pygame.mixer.Sound(music4)
 now=datetime.datetime.now()
 nowDatetime=now.strftime('%Y-%m-%d %H:%M:%S')
 ```
+
 1. 게임 시간을 기록하는 변수를 설정합니다.
+
 
 
 ```
@@ -218,9 +219,12 @@ c=conn.cursor()
 c.execute("CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT, \
     username text, score text, regdate text)")
 ```
+
 2.  db 경로와 커서를 연결하고 테이블을 생성합니다.
 점수가 기록되면 따로 insert 해주지 않아도 1씩 증가 되게 합니다.
-                       
+      
+      
+      
 ```
 def pg_rank():
     rankwindow()
@@ -237,7 +241,11 @@ def pg_rank():
         pygame.display.update()
         clock.tick(60)
 ```
+
 3. 시작화면의 Ranking 버튼을 클릭하면 해당 함수가 실행되어 랭킹 화면이 나오게 합니다.
+
+
+
 
 ```
 def rankwindow():
@@ -257,7 +265,11 @@ def rankwindow():
     screen.blit(text_row, (140, 90))
   
 ```
+
 4. 랭킹 화면이 나타나는 함수입니다. "RANKING", "NAME    SCORE   REGDATE", "Press space to go back" 글씨가 나타나게 합니다. 
+
+
+
 
 ```
 def wait_key():
@@ -272,7 +284,11 @@ def wait_key():
                 waiting = False
                 running = False        
 ```
+
 5. 시간을 600초로 임의로 설정한뒤, Space 키를 누르면 다시 돌아가게 설정합니다.
+
+
+
 
 ```
   for row, length in zip(c.execute("SELECT username, score, regdate FROM users ORDER BY score desc LIMIT 5"), range(140,610,30)):
@@ -283,13 +299,18 @@ def wait_key():
 
     screen.blit(text_back, (240,380))
 ```
-6. ** 함수 rankwindow() ** 부분중, 랭킹을 클릭하면 그동안 저장된 데이터를 score 기준 내림차순 정렬하여 5개 값을 출력합니다.
+
+6. **함수 rankwindow()** 부분중, 랭킹을 클릭하면 그동안 저장된 데이터를 score 기준 내림차순 정렬하여 5개 값을 출력합니다.
+
+
+
 
 ```
  if bar2_score == 3:  # ai가 10점 달성시 종료 bgm
         c.execute("INSERT INTO users('username', 'score', 'regdate') VALUES(?,?,?)", \
             ('playern', bar1_score, nowDatetime))
 ```
+
 7. AI 가 특정 점수를 획득하면, 각 데이터를 db에 저장합니다.
 
 
@@ -323,9 +344,13 @@ class Button:
                 return True
         return False
  ```
+ 
  1. Button 클래스 안에 색, 좌표, 크기, 텍스트 를 추가합니다. 
  draw 함수에서 외곽선 및 버튼을 그립니다.
  isOver 함수에서 버튼의 크기를 정해줍니다.
+ 
+ 
+ 
  
  ```
  def intro():
@@ -371,7 +396,11 @@ class Button:
         pygame.display.update()
         clock.tick(15)
 ```
+
 2. 배경화면을 설정하고, 위치에 맞게 Start, Ranking, Quit 버튼을 클래스를 활용해 추가해줍니다.
+
+
+
 
 ```
 def action():
@@ -385,7 +414,9 @@ def action():
     return None
 intro()    
 ```
+
 3. 현재 마우스 클릭 좌표를 기준으로 버튼을 구현합니다.
+
 
 
 ## 정지기능 추가
@@ -408,8 +439,11 @@ def paused():
     screen.blit(text_continue, (230,260))
     screen.blit(text_quit, (230, 320))
 ```
+
 1. 사용할 색을 지정해주고, 글씨 폰트와 크기를 설정해 "PAUSE", "Press space to continue", 
  "Press esc to quit" 문구를 위치에 맞게 추가해줍니다.
+ 
+ 
  
 ```
 
@@ -427,6 +461,7 @@ def paused():
         pygame.display.update()
         clock.tick(60)   
 ```
+
 2. 플레이어가 X키를 눌러 강제로 종료하면 프로그램이 종료되고
 KEYDOWM 이벤트를 이용해 Esc키를 누르면 게임 프로그램 종료, Space 키를 누르면 게임이 재시작 되게 합니다.
 
