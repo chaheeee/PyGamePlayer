@@ -10,6 +10,7 @@
 #       GNU General Public License for more details.
 import numpy
 import pygame
+import os
 from pygame.locals import *
 from sys import exit
 import random
@@ -18,6 +19,15 @@ import time   #modify
 from tkinter import *  #modify
 import sqlite3
 import datetime
+
+#modify +++++++++++++++++++++++++++++++++++++++ 최용훈
+
+blist=[]
+
+white = (255, 255, 255)
+pong_title_path = os.path.join('Assets','Images','pong_title.jpg')
+
+# +++++++++++++++++++++++++++++++++++++++++++
 
 now=datetime.datetime.now()
 nowDatetime=now.strftime('%Y-%m-%d %H:%M:%S')
@@ -97,6 +107,92 @@ def paused():
                     loop = 0
         pygame.display.update()
         clock.tick(60)                
+
+# +++++++++++++++++++++++++++++++++++++++++++
+
+
+
+#modify +++++++++++++++++++++++++++++++++++++++최용훈
+
+class Button:
+    def __init__(self, color, x, y, width, height, text = ''):
+        self.color = color
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.text = text
+    
+    def draw(self, win, outline=None):
+        if outline:
+            pygame.draw.rect(win, outline, (self.x-2, self.y-2, self.width+4, self.height+4), 0)
+        
+        pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.height), 0)
+
+        if self.text != '':
+            font = pygame.font.SysFont('comicsans', 60)
+            text = font.render(self.text, 1, (0,0,0))
+            win.blit(text, (self.x + (self.width/2 - text.get_width()/2), self.y + (self.height/2 - text.get_height()/2)))
+        
+    def isOver(self, pos):
+        if pos[0] > self.x and pos[0] < self.x + self.width:
+            if pos[1] > self.y and pos[1] < self.y + self.height:
+                return True
+        
+        return False
+
+
+def intro():
+    i=True
+    StartButton = Button((0, 255, 0), 450, 100, 50, 50, 'Click')
+    RankingButton = Button((0, 255, 0), 450, 200, 50, 50, 'Click')
+    QuitButton = Button((0, 255, 0), 450, 300, 50, 50, 'Click')
+
+    Start = font.render('Start', True,(255,255,255))
+    Ranking = font.render('Ranking', True,(255,255,255))
+    Quit = font.render('Quit', True,(255,255,255))
+    while i:
+        
+        for event in pygame.event.get():
+            pos = pygame.mouse.get_pos()
+            keyp = action()
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if keyp!=None or event.type==pygame.KEYDOWN :
+                try:
+                    if keyp=='c' or event.key==pygame.K_c :
+                        i=False
+                except:
+                    continue
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if StartButton.isOver(pos):
+                    i=False
+                elif RankingButton.isOver(pos):
+                    i=False
+                elif QuitButton.isOver(pos):
+                    pygame.quit()
+                    quit()
+        image = pygame.image.load(pong_title_path)
+        screen.blit(image,(0,0))
+        screen.blit(Start,(450.,100.))
+        screen.blit(Ranking,(450.,200.))
+        screen.blit(Quit,(450.,300.))
+        pygame.display.update()
+        clock.tick(15)
+
+def action():
+    global blist
+    mouse = pygame.mouse.get_pos()
+    click = pygame.mouse.get_pressed()
+    for tup in blist:
+        if tup[0] + tup[2] > mouse[0] > tup[0] and tup[1] + tup[3] > mouse[1] > tup[1]:
+            if click[0] == 1:
+                return tup[4]
+    return None
+
+
+intro()
 
 # +++++++++++++++++++++++++++++++++++++++++++
 
