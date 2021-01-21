@@ -39,13 +39,13 @@ c.execute("CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT
 
 pygame.init()
 
-pygame.mixer.init()  
-pygame.mixer.music.load("bgm/bubble_bobble.mp3") # 게임 bgm
-pygame.mixer.music.set_volume(0.3) # volume 조절 1 ~ 0.1
-pygame.mixer.music.play(-1) 
+# pygame.mixer.init()  
+# pygame.mixer.music.load("bgm/bubble_bobble.mp3") # 게임 bgm
+# pygame.mixer.music.set_volume(0.3) # volume 조절 1 ~ 0.1
+# pygame.mixer.music.play(-1) 
 
-game_over = pygame.mixer.Sound("bgm/game_over.wav")  # 종료 bgm
-pingpong = pygame.mixer.Sound("bgm/pingpongbat.wav") # 게임 효과음
+# game_over = pygame.mixer.Sound("bgm/game_over.wav")  # 종료 bgm
+# pingpong = pygame.mixer.Sound("bgm/pingpongbat.wav") # 게임 효과음
 
 
 screen = pygame.display.set_mode((640,480),0,32)
@@ -79,9 +79,88 @@ clock = pygame.time.Clock()
 font = pygame.font.SysFont("calibri",40)
 
 
+# ++++++++++++++++++++++++++++++++++++++++++++++++++장민주님
 
+def pg_rank():
+    rankwindow()
+    #rank=True
+    #while rank:
+    #    for event in pygame.event.get():
+    #        if event.type==pygame.QUIT:
+    #            pygame.quit()
+    #            sys.exit()
+
+    # screen.blit(background, (0,0))
+    #myFont=pygame.font.SysFont("arial", 20, True, False)
+    #myFont2 = pygame.font.SysFont("arial",30,True,False)
+    #title_text=myFont2.render("RANK", True, (255,255,255))
+    #screen.blit(title_text, (280,260))
+
+
+    # for row in c.execute("SELECT * FROM users ORDER BY score desc"):
+    #     rank=myFont.render(row, True, WHITE)
+    #     screen.blit(rank, screen)
+    #screen.fill(BLACK)
+    loop=1
+    # while loop:
+    #     for event in pygame.event.get():
+
+    #     pygame.display.update()
+    #     clock.tick(60)
+
+    # screen.blit("BACK")
+    while loop:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                loop = 0
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    loop = 0
+                    pygame.quit()
+        pygame.display.update()
+        clock.tick(60)
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++까지
 
 #modify +++++++++++++++++++++++++++++++++++++++
+
+def rankwindow():
+    screen.fill(white)
+    BLACK = (0,0,0)
+    RED = (255,0,0)
+    BLUE = (0,0,255)
+    
+    myFont = pygame.font.SysFont("arial",30,True,False)
+    myFont2 = pygame.font.SysFont("arial", 14, True, False)
+
+    text_rank = myFont.render("RANKING", True, RED)
+    text_back = myFont2.render("Press space to go back", True,RED )
+    text_name = myFont2.render("Name", True, BLUE)
+    text_score = myFont2.render("Score", True, BLUE)
+    text_date = myFont2.render("Date", True, BLUE)
+    
+    screen.blit(text_rank, (240,30))
+    screen.blit(text_back, (240,380))
+    screen.blit(text_name, (185,70))
+    screen.blit(text_score, (280,70))
+    screen.blit(text_date, (400, 70))
+
+    pygame.display.flip()
+    wait_key()
+
+
+def wait_key():
+    waiting = True
+    while waiting:
+        clock.tick(600)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                waiting = False
+                running = False
+            if event.type == pygame.K_SPACE:
+                waiting = False
+                running = False        
+    
 
 
 def paused():
@@ -147,7 +226,6 @@ class Button:
         if pos[0] > self.x and pos[0] < self.x + self.width:
             if pos[1] > self.y and pos[1] < self.y + self.height:
                 return True
-        
         return False
 
 
@@ -179,6 +257,7 @@ def intro():
                     i=False
                 elif RankingButton.isOver(pos):
                     i=False
+                    pg_rank()
                 elif QuitButton.isOver(pos):
                     pygame.quit()
                     quit()
@@ -230,6 +309,12 @@ while done==False:
             
 
  # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+     #+++++++++++++++++++++++++++++++++++++++++++장민주
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                pg_rank()    
+
+    #++++++++++++++++++++++++++++까지
             
     score1 = font.render(str(bar1_score), True,(255,255,255))
     score2 = font.render(str(bar2_score), True,(255,255,255))
@@ -272,13 +357,13 @@ while done==False:
         if circle_y >= bar1_y - 7.5 and circle_y <= bar1_y + 42.5:
             circle_x = 20.
             speed_x = -speed_x
-            pygame.mixer.Sound.play(pingpong)
+            #pygame.mixer.Sound.play(pingpong)
 
     if circle_x >= bar2_x - 15.:
         if circle_y >= bar2_y - 7.5 and circle_y <= bar2_y + 42.5:
             circle_x = 605.
             speed_x = -speed_x
-            pygame.mixer.Sound.play(pingpong)
+            #pygame.mixer.Sound.play(pingpong)
 
     if circle_x < 5.:
         bar2_score += 1
@@ -291,28 +376,28 @@ while done==False:
     if circle_y <= 10.:
         speed_y = -speed_y
         circle_y = 10.
-        pygame.mixer.Sound.play(pingpong)
+        #pygame.mixer.Sound.play(pingpong)
 
     elif circle_y >= 457.5:
         speed_y = -speed_y
         circle_y = 457.5
-        pygame.mixer.Sound.play(pingpong)
+        #pygame.mixer.Sound.play(pingpong)
         
-    if bar2_score == 10:  # ai가 10점 달성시 종료 bgm
-        c.execute("INSERT INTO users('username', 'score', 'regdate') VALUES(?,?,?)", \
-            ('playern', bar1_score, nowDatetime))
-        pygame.mixer.music.stop() 
-        pygame.mixer.Sound.play(game_over)
-        game_over.set_volume(0.3)
-        # 게임 오버 메시지
-        msg = font.render("Game Over", True, (255, 255, 0)) 
-        screen.blit(msg, (230,260))
-        pygame.display.update()
+    # if bar2_score == 10:  # ai가 10점 달성시 종료 bgm
+    #     c.execute("INSERT INTO users('username', 'score', 'regdate') VALUES(?,?,?)", \
+    #         ('playern', bar1_score, nowDatetime))
+    #     pygame.mixer.music.stop() 
+    #     pygame.mixer.Sound.play(game_over)
+    #     game_over.set_volume(0.3)
+    #     # 게임 오버 메시지
+    #     msg = font.render("Game Over", True, (255, 255, 0)) 
+    #     screen.blit(msg, (230,260))
+    #     pygame.display.update()
 
-        # 4초 대기후 나가기
-        pygame.time.delay(4000)
-        pygame.quit()
-        exit()
+    #     # 4초 대기후 나가기
+    #     pygame.time.delay(4000)
+    #     pygame.quit()
+    #     exit()
 
 
 
