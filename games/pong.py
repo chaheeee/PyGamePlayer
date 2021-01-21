@@ -27,7 +27,7 @@ blist=[]
 white = (255, 255, 255)
 pong_title_path = os.path.join('Assets','Images','pong_title.jpg')
 
-# +++++++++++++++++++++++++++++++++++++++++++
+#modify +++++++++++++++++++++++++++++++++++++++++++ 장민주
 
 now=datetime.datetime.now()
 nowDatetime=now.strftime('%Y-%m-%d %H:%M:%S')
@@ -39,13 +39,13 @@ c.execute("CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT
 
 pygame.init()
 
-# pygame.mixer.init()  
-# pygame.mixer.music.load("bgm/bubble_bobble.mp3") # 게임 bgm
-# pygame.mixer.music.set_volume(0.3) # volume 조절 1 ~ 0.1
-# pygame.mixer.music.play(-1) 
+pygame.mixer.init()
+pygame.mixer.music.load("bgm/bubble_bobble.mp3") # 게임 bgm
+pygame.mixer.music.set_volume(0.3) # volume 조절 1 ~ 0.1
+pygame.mixer.music.play(-1) 
 
-# game_over = pygame.mixer.Sound("bgm/game_over.wav")  # 종료 bgm
-# pingpong = pygame.mixer.Sound("bgm/pingpongbat.wav") # 게임 효과음
+game_over = pygame.mixer.Sound("bgm/game_over.wav")  # 종료 bgm
+pingpong = pygame.mixer.Sound("bgm/pingpongbat.wav") # 게임 효과음
 
 
 screen = pygame.display.set_mode((640,480),0,32)
@@ -79,7 +79,7 @@ clock = pygame.time.Clock()
 font = pygame.font.SysFont("calibri",40)
 
 
-# ++++++++++++++++++++++++++++++++++++++++++++++++++장민주님
+#modify ++++++++++++++++++++++++++++++++++++++++++++++++++장민주
 
 def pg_rank():
     rankwindow()
@@ -96,7 +96,7 @@ def pg_rank():
         pygame.display.update()
         clock.tick(60)
 
-#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++까지
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 #modify +++++++++++++++++++++++++++++++++++++++
 
@@ -361,21 +361,21 @@ while done==False:
         circle_y = 457.5
         #pygame.mixer.Sound.play(pingpong)
         
-    # if bar2_score == 10:  # ai가 10점 달성시 종료 bgm
-    #     c.execute("INSERT INTO users('username', 'score', 'regdate') VALUES(?,?,?)", \
-    #         ('playern', bar1_score, nowDatetime))
-    #     pygame.mixer.music.stop() 
-    #     pygame.mixer.Sound.play(game_over)
-    #     game_over.set_volume(0.3)
-    #     # 게임 오버 메시지
-    #     msg = font.render("Game Over", True, (255, 255, 0)) 
-    #     screen.blit(msg, (230,260))
-    #     pygame.display.update()
+    if bar2_score == 10:  # ai가 10점 달성시 종료 bgm
+        c.execute("INSERT INTO users('username', 'score', 'regdate') VALUES(?,?,?)", \
+            ('playern', bar1_score, nowDatetime))
+        pygame.mixer.music.stop() 
+        pygame.mixer.Sound.play(game_over)
+        game_over.set_volume(0.3)
+        # 게임 오버 메시지
+        msg = font.render("Game Over", True, (255, 255, 0)) 
+        screen.blit(msg, (230,260))
+        pygame.display.update()
 
-    #     # 4초 대기후 나가기
-    #     pygame.time.delay(4000)
-    #     pygame.quit()
-    #     exit()
+        # 4초 대기후 나가기
+        pygame.time.delay(4000)
+        pygame.quit()
+        exit()
 
 
 
