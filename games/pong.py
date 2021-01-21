@@ -35,7 +35,7 @@ nowDatetime=now.strftime('%Y-%m-%d %H:%M:%S')
 conn=sqlite3.connect('rank.db', isolation_level=None)
 c=conn.cursor()
 c.execute("CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT, \
-    username text, score INTEGER, regdate text)")
+    username text, score text, regdate text)")
 
 pygame.init()
 
@@ -376,7 +376,7 @@ while done==False:
 
     #modify **************************************************** 오은상
 
-    if bar2_score == 10:  # ai가 10점 달성시 종료 bgm
+    if bar2_score == 3:  # ai가 10점 달성시 종료 bgm
         c.execute("INSERT INTO users('username', 'score', 'regdate') VALUES(?,?,?)", \
             ('playern', bar1_score, nowDatetime))
         bgm.stop() 
