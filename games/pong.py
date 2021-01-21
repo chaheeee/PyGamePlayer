@@ -299,7 +299,7 @@ while done==False:
         pygame.mixer.Sound.play(pingpong)
         
     if bar2_score == 10:  # ai가 10점 달성시 종료 bgm
-        c.execute("INSERT INTO users('username', 'score, regdate') VALUES(?,?,?)", \
+        c.execute("INSERT INTO users('username', 'score', 'regdate') VALUES(?,?,?)", \
             ('playern', bar1_score, nowDatetime))
         pygame.mixer.music.stop() 
         pygame.mixer.Sound.play(game_over)
