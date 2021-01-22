@@ -36,7 +36,7 @@ circle = circ_sur.convert()
 circle.set_colorkey((0,0,0))
 ```
 
-1. 공을 받아칠 하얀색 직사각형 바 2개를 생성하고, 하얀색 공을 만듭니다.
+1. 공을 받아칠 하얀색 직사각형 바 2개(**bar1, bar2**)를 생성하고, 하얀색 공(**circle**)을 만듭니다.
 
 
 
@@ -166,7 +166,7 @@ music4  = os.path.join('bgm', "click.wav")
 click = pygame.mixer.Sound(music4)
 ```
 
-1. bgm 폴더안에서 상황에 맞는 음악을 가져와 적절하게 설정해줍니다.
+1. **'bgm'** 폴더안에서 상황에 맞는 음악을 가져와 적절하게 설정해줍니다.
 
 
 `<pingpong.play()>`
@@ -197,7 +197,8 @@ click = pygame.mixer.Sound(music4)
         pygame.display.update()
 ```
 
-3. 게임이 종료됐을때 브금이 나오도록 추가해 줍니다.
+3. `if bar2_score == 3:` 해당 라인을 통해, 특정 조건이 되었을때 게임이 종료되고 
+`<bgm.stop()>` 원래 나오던 브금을 종료, `<game_over.play()>` 새로운 종료 브금이 나오도록 추가해 줍니다.
   AI가 특정 점수를 획득시 게임이 종료되는 문구가 표시되고, 4초후 프로그램이 종료되도록 설정합니다.
 
 
@@ -209,7 +210,7 @@ now=datetime.datetime.now()
 nowDatetime=now.strftime('%Y-%m-%d %H:%M:%S')
 ```
 
-1. 게임 시간을 기록하는 변수를 설정합니다.
+1. `datetime` 을 이용하여 게임 시간을 기록하는 변수를 설정합니다.
 
 
 
@@ -242,7 +243,7 @@ def pg_rank():
         clock.tick(60)
 ```
 
-3. 시작화면의 Ranking 버튼을 클릭하면 해당 함수가 실행되어 랭킹 화면이 나오게 합니다.
+3. 시작화면의 Ranking 버튼을 클릭하면 해당 함수가 실행되어 `rankwindow()` 함수를 통해 랭킹 화면이 나오게 합니다.
 
 
 
@@ -266,7 +267,8 @@ def rankwindow():
   
 ```
 
-4. 랭킹 화면이 나타나는 함수입니다. "RANKING", "NAME    SCORE   REGDATE", "Press space to go back" 글씨가 나타나게 합니다. 
+4. 랭킹 화면이 나타나는 함수입니다. 
+`<screen.fill(white)>` 하얀색 배경으로 된 창에 "RANKING", "NAME    SCORE   REGDATE", "Press space to go back" 글씨가 나타나게 합니다. 
 
 
 
@@ -285,7 +287,8 @@ def wait_key():
                 running = False        
 ```
 
-5. 시간을 600초로 임의로 설정한뒤, Space 키를 누르면 다시 돌아가게 설정합니다.
+5. `clock.tick(600)`을 이용해 시간을 600초로 임의로 설정한뒤, 
+`<if event.type == pygame.K_SPACE:>` Space 키를 누르면 다시 돌아가게 설정합니다.
 
 
 
@@ -300,7 +303,8 @@ def wait_key():
     screen.blit(text_back, (240,380))
 ```
 
-6. **함수 rankwindow()** 부분중, 랭킹을 클릭하면 그동안 저장된 데이터를 score 기준 내림차순 정렬하여 5개 값을 출력합니다.
+6. **함수 rankwindow()** 부분중, 랭킹을 클릭하면 그동안 저장된 데이터를
+`ORDER BY score desc LIMIT 5` score 기준 내림차순 정렬하여 5개 값을 출력합니다.
 
 
 
@@ -311,7 +315,7 @@ def wait_key():
             ('playern', bar1_score, nowDatetime))
 ```
 
-7. AI 가 특정 점수를 획득하면, 각 데이터를 db에 저장합니다.
+7. AI 가 특정 점수를 획득하면, `execute` 를 이용하여 각 데이터를 db에 저장합니다.
 
 
 
@@ -346,8 +350,8 @@ class Button:
  ```
  
  1. Button 클래스 안에 색, 좌표, 크기, 텍스트 를 추가합니다. 
- draw 함수에서 외곽선 및 버튼을 그립니다.
- isOver 함수에서 버튼의 크기를 정해줍니다.
+ `<def draw(self, win, outline=None):>` 해당 함수에서 외곽선 및 버튼을 그립니다.
+ `<def isOver(self, pos):>` 함수에서 버튼의 크기를 정해줍니다.
  
  
  
@@ -397,7 +401,11 @@ class Button:
         clock.tick(15)
 ```
 
-2. 배경화면을 설정하고, 위치에 맞게 Start, Ranking, Quit 버튼을 클래스를 활용해 추가해줍니다.
+2. `<image = pygame.image.load(pong_title_path)>` 를 통해 배경화면을 설정합니다.
+위치에 맞게 Start, Ranking, Quit 버튼을 클래스를 활용해 추가해줍니다.
+`< if event.type == pygame.MOUSEBUTTONDOWN:>` 마우스를 클릭했을때의 이벤트를 추가하여 
+**Ranking** 버튼을 눌렀을때는 랭킹 화면이 나타나도록 `pg_rank()` 해당함수를 추가합니다.
+마찬가지로 Quit 버튼을 눌렀을때는 게임이 종료되도록 `pygame.quit()` 해당 라인을 추가합니다.
 
 
 
@@ -440,8 +448,8 @@ def paused():
     screen.blit(text_quit, (230, 320))
 ```
 
-1. 사용할 색을 지정해주고, 글씨 폰트와 크기를 설정해 "PAUSE", "Press space to continue", 
- "Press esc to quit" 문구를 위치에 맞게 추가해줍니다.
+1. 사용할 색을 지정해주고, 글씨 폰트와 크기를 설정해
+"PAUSE", "Press space to continue", "Press esc to quit" 문구를 위치에 맞게 추가해줍니다.
  
  
  
@@ -462,8 +470,9 @@ def paused():
         clock.tick(60)   
 ```
 
-2. 플레이어가 X키를 눌러 강제로 종료하면 프로그램이 종료되고
-KEYDOWM 이벤트를 이용해 Esc키를 누르면 게임 프로그램 종료, Space 키를 누르면 게임이 재시작 되게 합니다.
+2. `< if event.type == pygame.KEYDOWN:>` 를 이용해 키가 눌러졌을때의 이벤트를 살핍니다.
+`if event.key == pygame.K_ESCAPE:` Esc키를 누르면 게임 프로그램 종료,
+`if event.key == pygame.K_SPACE:`   Space 키를 누르면 게임이 재시작 되게 합니다.
 
 
 
